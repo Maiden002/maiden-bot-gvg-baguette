@@ -28,7 +28,7 @@ function printPlayer (player, message) {
 
     async function accessSpreadsheet(message) {
     console.log('Debut');
-    const doc = new GoogleSpreadsheet('1CTA9M5EDc39mCX8iFqtv3raNKbGxLT8P-RkNGj1Xz9c');
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[9];
