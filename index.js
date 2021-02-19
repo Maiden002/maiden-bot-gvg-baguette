@@ -40,6 +40,20 @@ function printPlayer (player, message) {
     rows.forEach(row => {
         printPlayer(row, message);
     })
+
+    async function registerMember(user) {
+        const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+        await promisify(doc.useServiceAccountAuth)(creds);
+        const info = await promisify(doc.getInfo)();
+        const sheet = info.worksheets[10];
+
+        const rows = {
+            id = user.id,
+            username = user.username
+        }
+
+        await promisify(sheet.addRow)(row);
+    }
 }
 
 // MESSAGE DU BOT ***************************//
@@ -49,5 +63,9 @@ bot.on('message', function(message){
     }    
     if(message.content === 'md.tw_assignation'){
         accessSpreadsheet(message);
+    }
+
+    if(message.content === 'md.r'){
+        registerMember(user);
     }
 })
