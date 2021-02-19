@@ -5,6 +5,6 @@ module.exports = class help {
     }
 
     static action (message) {
-        message.reply('Bot Maiden - TW Baguette - Aide');
+        message.channel.send('```\n**Menu Aide - Maiden Bot (GVG Baguette)**\n\n| md.r (tagDiscord) : Vous enregistre auprès du bot. Pour enregistrer un autre joueur, ajouter son tag après la commande.\n\n| md.ur (tagDiscord) : Vous supprimer auprès du bot. Pour supprimer un autre joueur, ajouter son tag après la commande.\n\n| md.tw_assignation (En travaux) : Envoi par MP les assignations de pose en défense pour les joueurs participant à la TW.\n```');
     }
 }

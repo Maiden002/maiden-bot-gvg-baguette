@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 
 const bot = new Discord.Client();
 const help = require('./commands/help')
+const {prefix} = require("./config.json");
 
 // DEMARRAGE DU BOT ***************************//
 bot.on("ready", () => {
@@ -17,6 +18,8 @@ const { promisify } = require('util');
 
 const creds = require('./client_secret.json');
 
+let testRegister = true;
+
 function printPlayer (player, message) {
 
     console.log(`Hello : ${player.player}`);
@@ -26,7 +29,7 @@ function printPlayer (player, message) {
     console.log('----------------------');
 }
 
-    async function accessSpreadsheet(message) {
+async function accessSpreadsheet(message) {
     console.log('Debut');
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
@@ -40,20 +43,69 @@ function printPlayer (player, message) {
     rows.forEach(row => {
         printPlayer(row, message);
     })
+}
 
-    async function registerMember(user) {
-        const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
-        await promisify(doc.useServiceAccountAuth)(creds);
-        const info = await promisify(doc.getInfo)();
-        const sheet = info.worksheets[10];
+async function registerMember(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    testRegister = true;
+    let idToInsert = "";
+    let userNameToInsert = "";
+    let rowToAdd = "";
 
-        const rows = {
-            id = user.id,
-            username = user.username
+    if(user){
+        rowToAdd = {
+            identifiant: user.id,
+            username: user.user.username
         }
+        idToInsert = user.id;
+        userNameToInsert = user.user.username;
+    } else {
+        rowToAdd = {
+            identifiant: message.author.id,
+            username: message.author.username
+        }
+        idToInsert = message.author.id;
+        userNameToInsert = message.author.username;
+    } 
 
-        await promisify(sheet.addRow)(row);
+    const rows = await promisify(sheet.getRows)({
+        offset: 1
+    });
+
+    rows.forEach(row => {
+        if(row.identifiant === idToInsert) {
+            testRegister = false;
+        }
+    })
+
+    if(testRegister) {
+        await promisify(sheet.addRow)(rowToAdd);
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré.');
+    } else {
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré.');
     }
+}
+
+async function unregisterMember(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    let idUserToDelete = "";
+
+    if(user) {
+        idUserToDelete = user.id;
+    } else {
+        idUserToDelete = message.author.id;
+    }
+    const rows = await promisify(sheet.getRows)({
+        query: `identifiant = ${idUserToDelete}`
+    })
+
+    rows[0].del();   
 }
 
 // MESSAGE DU BOT ***************************//
@@ -64,8 +116,40 @@ bot.on('message', function(message){
     if(message.content === 'md.tw_assignation'){
         accessSpreadsheet(message);
     }
+    if(message.content.startsWith('md.r')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
 
-    if(message.content === 'md.r'){
-        registerMember(user);
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMember(message, user);
+    }
+    if(message.content.startsWith('md.ur')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMember(message, user);
     }
 })
+
+
+
+// FUNCTION *************************//
+
+function getUserFromMention(mention) {
+	if (!mention) return;
+
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+        
+		return mention;
+	}
+}
