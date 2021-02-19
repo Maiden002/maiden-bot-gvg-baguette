@@ -35,13 +35,24 @@ async function accessSpreadsheet(message) {
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[9];
+    const sheetMemberslst = info.worksheets[10];
     
     const rows = await promisify(sheet.getRows)({
         query: '_cn6ca = FALSE'
     });
 
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+
     rows.forEach(row => {
-        printPlayer(row, message);
+        let player = row.player;
+        let poseEnDef = row._dw4je;
+        rowMembers.forEach(row2 => {
+            if(row2.username === player) {
+                message.channel.get(row2.identifiant).send(poseEnDef);
+            }
+        })
     })
 }
 
@@ -136,10 +147,7 @@ bot.on('message', function(message){
     }
 })
 
-
-
 // FUNCTION *************************//
-
 function getUserFromMention(mention) {
 	if (!mention) return;
 
