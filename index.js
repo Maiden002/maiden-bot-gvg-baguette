@@ -29,7 +29,7 @@ function printPlayer (player, message) {
     console.log('----------------------');
 }
 
-async function accessSpreadsheet(message) {
+async function accessSpreadsheet(message, members) {
     console.log('Debut');
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
@@ -46,14 +46,24 @@ async function accessSpreadsheet(message) {
     });
 
     rows.forEach(row => {
-        let player = row.player;
+        let player = row._djhdx;
         let poseEnDef = row._dw4je;
         rowMembers.forEach(row2 => {
             if(row2.username === player) {
-                message.channel.get(row2.identifiant).send(poseEnDef);
+                let identifiant = row2.identifiant;
+                    if (message.channel.type !== "text") return;
+                    // Récupérer la liste des membres
+                    members.forEach(member => {
+                        // Si le membre est un bot, l’ignorer
+                        if (member.user.bot) return;
+                        // Envoyer le message au membre
+                        if(member.user.id == identifiant)
+                            member.send(poseEnDef);                       
+                        });
             }
         })
     })
+    console.log("Fin");
 }
 
 async function registerMember(message, user) {
@@ -125,7 +135,8 @@ bot.on('message', function(message){
         return help.action(message)
     }    
     if(message.content === 'md.tw_assignation'){
-        accessSpreadsheet(message);
+        const members = message.channel.guild.members.cache;
+        accessSpreadsheet(message,members);
     }
     if(message.content.startsWith('md.r')){
         const withoutPrefix = message.content.slice(prefix.length);
