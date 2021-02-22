@@ -164,10 +164,24 @@ const guildEmbed = new Discord.MessageEmbed()
 .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
 
 let listMembers = "";
+let listMembers2 = "";
+let listMembers3 = "";
+
+let count = 1;
 rowMembers.forEach(row => {
-    listMembers = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+    if(count <= 20) {
+        listMembers = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+    } else if(count > 20) {
+        listMembers2 = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+    } else if(count > 40) {
+        listMembers3 = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+    } 
+    
+    count = count + 1 ;
 });
     guildEmbed.addField('Membres enregistrés :', listMembers);
+    guildEmbed.addField(' ', listMembers2);
+    guildEmbed.addField(' ', listMembers3);
     message.channel.send(guildEmbed)
     console.log('Fin - ListPlayer');
 }
