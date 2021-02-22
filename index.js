@@ -159,7 +159,7 @@ async function accessListPlayer(message) {
         listMembers = listMembers + "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
     });
 
-    message.channel.send(listMembers);
+    message.channel.send(listMembers, disableMentions);
 }
 
 // MESSAGE DU BOT ***************************//
