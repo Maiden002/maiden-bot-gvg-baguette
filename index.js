@@ -159,7 +159,19 @@ async function accessListPlayer(message) {
         listMembers = listMembers + "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
     });
 
-    message.channel.send(listMembers, disableMentions);
+const guildEmbed = new Discord.MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle('Les Baguettes Corelliennes')
+    .setAuthor('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png', '')
+    .setDescription('Liste des joueurs des Baguettes Corelliennes')
+    .setThumbnail('https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png')
+    .addFields(
+        { name: 'Joueurs enregistrés', value: listMembers },
+    )
+    .setTimestamp()
+    .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
+
+    message.channel.send(guildEmbed)
 }
 
 // MESSAGE DU BOT ***************************//
