@@ -116,17 +116,25 @@ async function unregisterMember(message, user) {
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[10];
     let idUserToDelete = "";
+    let idUserNameToDelete = "";
 
     if(user) {
         idUserToDelete = user.id;
+        idUserNameToDelete = user.username;
     } else {
         idUserToDelete = message.author.id;
+        idUserNameToDelete = message.author.username;
     }
     const rows = await promisify(sheet.getRows)({
         query: `identifiant = ${idUserToDelete}`
     })
 
-    rows[0].del();   
+    if(!rows[0]){
+        rows[0].del();
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré.');
+    } else {
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré.');
+    }   
 }
 
 // MESSAGE DU BOT ***************************//
