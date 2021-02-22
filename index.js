@@ -142,7 +142,7 @@ async function unregisterMember(message, user) {
     }   
 }
 
-async function accessListPlayer(message) {
+async function accessListPlayer(message, members) {
     console.log('Debut');
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
@@ -163,7 +163,6 @@ const guildEmbed = new Discord.MessageEmbed()
 .setTimestamp()
 .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
 
-const members = message.channel.guild.member.cache;
 let listMembers = "";
 rowMembers.forEach(row => {
     let tag = "";
@@ -192,7 +191,8 @@ bot.on('message', function(message){
     
     // ---------- LISTE PLAYER
     if(listPlayer.match(message)) {
-        accessListPlayer(message);
+        const members = message.channel.guild.members.cache;
+        accessListPlayer(message, members);
     }  
     
     // ---------- ASSIGNATION TW
