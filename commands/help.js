@@ -1,7 +1,8 @@
 module.exports = class help {
 
     static match (message) {
-        return message.content.toLowerCase().startsWith('md.help')
+        let messageContentHelp = message.content.toLowerCase();
+        return messageContentHelp.startsWith('md.help');
     }
 
     static action (message) {
