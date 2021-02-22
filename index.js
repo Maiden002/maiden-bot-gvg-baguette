@@ -45,7 +45,7 @@ async function accessSpreadsheet(message, members) {
         offset: 1
     });
 
-    let recap = "```Les membres suivants ont reçu leurs poses en défense : ";
+    let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
 
     rows.forEach(row => {
         let player = row._djhdx;
@@ -143,15 +143,15 @@ async function unregisterMember(message, user) {
 
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
-    if(help.match(message)) {
+    if(help.match(message.toLowerCase())) {
         return help.action(message)
     }    
-    if(message.content === 'md.tw_assignation'){
+    if(message.content.toLowerCase() === 'md.tw_assignation'){
         // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
         accessSpreadsheet(message,members);
     }
-    if(message.content.startsWith('md.r')){
+    if(message.content.toLowerCase().startsWith('md.r')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -160,7 +160,7 @@ bot.on('message', function(message){
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         registerMember(message, user);
     }
-    if(message.content.startsWith('md.ur')){
+    if(message.content.toLowerCase().startsWith('md.ur')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
