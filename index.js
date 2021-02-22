@@ -17,6 +17,7 @@ const GoogleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
 
 const creds = require('./client_secret.json');
+const listPlayer = require("./commands/listPlayer");
 
 let testRegister = true;
 
@@ -141,17 +142,49 @@ async function unregisterMember(message, user) {
     }   
 }
 
+async function accessListPlayer(message) {
+    console.log('Debut');
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheetMemberslst = info.worksheets[10];
+
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+
+    let listMembers = "";
+    rows.forEach(row => {
+        let tagDiscord = "<@" + row.identifiant + ">";
+        listMembers = listMembers + "```| " + row.username + " - AllyCode - " + tagDiscord + "\n";
+    });
+
+    listMembers = listMembers + "```";
+
+    message.channel.send(listMembers);
+}
+
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
     let messageContent = message.content.toLowerCase();
+    // ---------- HELP
     if(help.match(message)) {
-        return help.action(message)
-    }    
+        return help.action(message);
+    }
+    
+    // ---------- LISTE PLAYER
+    if(listPlayer.match(message)) {
+        accessListPlayer(message);
+    }  
+    
+    // ---------- ASSIGNATION TW
     if(messageContent === 'md.tw_assignation'){
         // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
         accessSpreadsheet(message,members);
     }
+
+    // ---------- INSCRIPTION
     if(messageContent.startsWith('md.r')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
@@ -161,6 +194,8 @@ bot.on('message', function(message){
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         registerMember(message, user);
     }
+
+    // ---------- DESINSCRIPTION
     if(messageContent.startsWith('md.ur')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
