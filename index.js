@@ -171,8 +171,8 @@ rowMembers.forEach(row => {
     guildEmbed.addField(listMembers);
 });
 
-
-    message.channel.send(guildEmbed)
+	console.log(guildEmbed);
+    //message.channel.send(guildEmbed)
 }
 
 // MESSAGE DU BOT ***************************//
