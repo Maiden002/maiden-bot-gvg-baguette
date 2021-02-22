@@ -167,7 +167,7 @@ const guildEmbed = new Discord.MessageEmbed()
 let listMembers = "";
 rowMembers.forEach(row => {
     let tagDiscord = "<@" + row.identifiant + ">";
-    listMembers = "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
+    listMembers = "| " + row.username + " - AllyCode - " + `${tagDiscord}` + "\n";
     guildEmbed.addField(listMembers);
 });
 
