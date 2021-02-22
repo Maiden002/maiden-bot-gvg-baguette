@@ -165,17 +165,8 @@ const guildEmbed = new Discord.MessageEmbed()
 
 let listMembers = "";
 rowMembers.forEach(row => {
-    let tag = "";
-    members.forEach(member => {
-        // Si le membre est un bot, l’ignorer
-        if (member.user.bot) return;
-        // Envoyer le message au membre
-        if(member.user.id === row.identifiant)
-            tag = member.user.tag;
-        });
-    
-    listMembers = `|  ${row.username} - AllyCode - @${tag} \n`;
-    guildEmbed.addField(listMembers);
+    listMembers = `|  ${row.username} - AllyCode - <@${identifiant}> \n`;
+    guildEmbed.addField(tag);
 });
 
     message.channel.send(guildEmbed)
