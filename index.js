@@ -176,7 +176,7 @@ let listMembers3 = "";
 let count = 1;
 rowMembers.forEach(row => {
     if(count <= 20) {
-        listMembers = listMembers + `| ${row.allyCode} - ${row.username} - <@${row.identifiant}>\n`;
+        listMembers = listMembers + `| ${row.allycode} - ${row.username} - <@${row.identifiant}>\n`;
     } else if(count > 20 && count < 41) {
         listMembers2 = listMembers2 + `| ${row.allyCode} - ${row.username} - <@${row.identifiant}>\n`;
     } else if(count > 40) {
