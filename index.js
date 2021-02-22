@@ -143,7 +143,7 @@ async function unregisterMember(message, user) {
 }
 
 async function accessListPlayer(message, members) {
-    console.log('Debut');
+    console.log('Debut - ListPlayer');
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
@@ -165,11 +165,12 @@ const guildEmbed = new Discord.MessageEmbed()
 
 let listMembers = "";
 rowMembers.forEach(row => {
-    listMembers = `|  ${row.username} - AllyCode \n`;
-    guildEmbed.addField(listMembers);
+    listMembers = `|  ${row.username} - AllyCode - <@${row.identifiant}\n`;
+    guildEmbed.addField('', listMembers, true);
 });
 
     message.channel.send(guildEmbed)
+    console.log('Fin - ListPlayer');
 }
 
 // MESSAGE DU BOT ***************************//
