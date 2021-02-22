@@ -174,7 +174,7 @@ rowMembers.forEach(row => {
             tag = member.user.tag;
         });
     
-    listMembers = "| " + row.username + " - AllyCode - " + tag + "\n";
+    listMembers = "| " + row.username + " - AllyCode - @" + tag + "\n";
     guildEmbed.addField(listMembers);
 });
 
