@@ -163,14 +163,13 @@ const guildEmbed = new Discord.MessageEmbed()
 .setTimestamp()
 .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
 
-
+const members = message.channel.guild.member.cache;
 let listMembers = "";
 rowMembers.forEach(row => {
-    let tagDiscord = "<@" + row.identifiant + ">";
-    listMembers = "| " + row.username + " - AllyCode - " + `${tagDiscord}` + "\n";
+    let user = members.get(row.identifiant);
+    listMembers = "| " + row.username + " - AllyCode - " + user.tag + "\n";
     guildEmbed.addField(listMembers);
 });
-
 
     message.channel.send(guildEmbed)
 }
