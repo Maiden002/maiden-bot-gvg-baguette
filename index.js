@@ -154,7 +154,7 @@ async function accessListPlayer(message) {
     });
 
     let listMembers = "";
-    rows.forEach(row => {
+    rowMembers.forEach(row => {
         let tagDiscord = "<@" + row.identifiant + ">";
         listMembers = listMembers + "```| " + row.username + " - AllyCode - " + tagDiscord + "\n";
     });
