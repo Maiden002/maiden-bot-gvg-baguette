@@ -7,7 +7,7 @@ const {prefix} = require("./config.json");
 // DEMARRAGE DU BOT ***************************//
 bot.on("ready", () => {
     console.log("Bot Maiden démarré");
-    bot.user.setActivity('Préparation de la TW').catch(console.error)
+    bot.user.setActivity('md.help | Préparation de la TW').catch(console.error)
 })
 
 bot.login(process.env.TOKEN);
