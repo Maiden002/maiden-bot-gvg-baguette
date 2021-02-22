@@ -153,23 +153,24 @@ async function accessListPlayer(message) {
         offset: 1
     });
 
-    let listMembers = "";
-    rowMembers.forEach(row => {
-        let tagDiscord = "<@" + row.identifiant + ">";
-        listMembers = listMembers + "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
-    });
-
+    
 const guildEmbed = new Discord.MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle('Les Baguettes Corelliennes')
-    .setAuthor('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png', '')
-    .setDescription('Liste des joueurs des Baguettes Corelliennes')
-    .setThumbnail('https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png')
-    .addFields(
-        { name: 'Joueurs enregistrés', value: listMembers },
-    )
-    .setTimestamp()
-    .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
+.setColor('#0099ff')
+.setTitle('Les Baguettes Corelliennes')
+.setAuthor('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png', '')
+.setDescription('Liste des joueurs des Baguettes Corelliennes')
+.setThumbnail('https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png')
+.setTimestamp()
+.setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
+
+
+let listMembers = "";
+rowMembers.forEach(row => {
+    let tagDiscord = "<@" + row.identifiant + ">";
+    listMembers = listMembers + "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
+    guildEmbed.addField(listMembers);
+});
+
 
     message.channel.send(guildEmbed)
 }
