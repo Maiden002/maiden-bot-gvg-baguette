@@ -129,7 +129,7 @@ async function unregisterMember(message, user) {
         query: `identifiant = ${idUserToDelete}`
     })
 
-    if(!rows[0]){
+    if(rows[0]){
         rows[0].del();
         message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré.');
     } else {
