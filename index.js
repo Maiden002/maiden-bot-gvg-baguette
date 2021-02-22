@@ -66,7 +66,7 @@ async function accessSpreadsheet(message, members) {
         })
     })
     recap = recap + '```';
-    message.channel.send(recap);
+    console.log(recap);
     console.log("Fin");
 }
 
