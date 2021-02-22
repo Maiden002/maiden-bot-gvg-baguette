@@ -60,7 +60,7 @@ async function accessSpreadsheet(message, members) {
                         // Envoyer le message au membre
                         if(member.user.id == identifiant)
                             member.send(poseEnDef);  
-                            recap =  recap + player.username + ", ";
+                            recap =  recap + member.user.username + ", ";
                         });
             }
         })
