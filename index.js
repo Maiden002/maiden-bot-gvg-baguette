@@ -165,10 +165,9 @@ const guildEmbed = new Discord.MessageEmbed()
 
 let listMembers = "";
 rowMembers.forEach(row => {
-    listMembers = `${row.username} - AllyCode - <@${row.identifiant}>\n`;
-    guildEmbed.addField('| ', listMembers);
+    listMembers = listMembers + `${row.username} - AllyCode - <@${row.identifiant}>\n`;
 });
-
+    guildEmbed.addField('| ', listMembers);
     message.channel.send(guildEmbed)
     console.log('Fin - ListPlayer');
 }
