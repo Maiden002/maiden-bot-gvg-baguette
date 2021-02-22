@@ -179,9 +179,16 @@ rowMembers.forEach(row => {
     
     count = count + 1 ;
 });
-    guildEmbed.addField('Membres enregistrés :', listMembers);
-    guildEmbed.addField(' ', listMembers2);
-    guildEmbed.addField(' ', listMembers3);
+    if(listMembers){
+        guildEmbed.addField('Membres enregistrés :', listMembers);
+    }
+    if(listMembers2){
+        guildEmbed.addField(' ', listMembers2);
+    }
+    if(listMembers3){
+        guildEmbed.addField(' ', listMembers3);
+    }
+
     message.channel.send(guildEmbed)
     console.log('Fin - ListPlayer');
 }
