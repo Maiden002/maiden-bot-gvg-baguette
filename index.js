@@ -143,15 +143,16 @@ async function unregisterMember(message, user) {
 
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
-    if(help.match(message.toLowerCase())) {
+    let messageContent = message.content.toLowerCase();
+    if(help.match(message)) {
         return help.action(message)
     }    
-    if(message.content.toLowerCase() === 'md.tw_assignation'){
+    if(messageContent === 'md.tw_assignation'){
         // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
         accessSpreadsheet(message,members);
     }
-    if(message.content.toLowerCase().startsWith('md.r')){
+    if(messageContent.startsWith('md.r')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -160,7 +161,7 @@ bot.on('message', function(message){
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         registerMember(message, user);
     }
-    if(message.content.toLowerCase().startsWith('md.ur')){
+    if(messageContent.startsWith('md.ur')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
