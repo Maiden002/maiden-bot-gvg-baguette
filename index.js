@@ -53,6 +53,7 @@ async function accessSpreadsheet(message, members) {
         rowMembers.forEach(row2 => {
             if(row2.username === player) {
                 let identifiant = row2.identifiant;
+                recap =  recap + player + ", ";
                     if (message.channel.type !== "text") return;
                     members.forEach(member => {
                         // Si le membre est un bot, l’ignorer
@@ -60,13 +61,12 @@ async function accessSpreadsheet(message, members) {
                         // Envoyer le message au membre
                         if(member.user.id === identifiant)
                             member.send(poseEnDef);  
-                            recap =  recap + member.user.username + ", ";
                         });
             }
         })
     })
     recap = recap + '```';
-    console.log(recap);
+    message.channel.send(recap);
     console.log("Fin");
 }
 
