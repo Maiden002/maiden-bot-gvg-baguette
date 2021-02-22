@@ -45,6 +45,8 @@ async function accessSpreadsheet(message, members) {
         offset: 1
     });
 
+    let recap = "```Les membres suivants ont reçu leurs poses en défense : ";
+
     rows.forEach(row => {
         let player = row._djhdx;
         let poseEnDef = row._dw4je;
@@ -52,17 +54,19 @@ async function accessSpreadsheet(message, members) {
             if(row2.username === player) {
                 let identifiant = row2.identifiant;
                     if (message.channel.type !== "text") return;
-                    // Récupérer la liste des membres
                     members.forEach(member => {
                         // Si le membre est un bot, l’ignorer
                         if (member.user.bot) return;
                         // Envoyer le message au membre
                         if(member.user.id == identifiant)
-                            member.send(poseEnDef);                       
+                            member.send(poseEnDef);  
+                            recap =  recap + player.username + ", ";
                         });
             }
         })
     })
+    recap = recap + '```';
+    message.channel.send(recap);
     console.log("Fin");
 }
 
@@ -143,6 +147,7 @@ bot.on('message', function(message){
         return help.action(message)
     }    
     if(message.content === 'md.tw_assignation'){
+        // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
         accessSpreadsheet(message,members);
     }
