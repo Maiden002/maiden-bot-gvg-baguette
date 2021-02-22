@@ -172,9 +172,9 @@ rowMembers.forEach(row => {
     if(count <= 20) {
         listMembers = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
     } else if(count > 20) {
-        listMembers2 = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+        listMembers2 = listMembers2 + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
     } else if(count > 40) {
-        listMembers3 = listMembers + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
+        listMembers3 = listMembers3 + `| ${row.username} - AllyCode - <@${row.identifiant}>\n`;
     } 
     
     count = count + 1 ;
