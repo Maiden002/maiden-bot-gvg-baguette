@@ -58,7 +58,7 @@ async function accessSpreadsheet(message, members) {
                         // Si le membre est un bot, l’ignorer
                         if (member.user.bot) return;
                         // Envoyer le message au membre
-                        if(member.user.id == identifiant)
+                        if(member.user.id === identifiant)
                             member.send(poseEnDef);  
                             recap =  recap + member.user.username + ", ";
                         });
