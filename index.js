@@ -163,6 +163,12 @@ const guildEmbed = new Discord.MessageEmbed()
 .setTimestamp()
 .setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
 
+let nbPlayer = 0;
+// Calcul du nombre de joueur présent 
+rowMembers.forEach(row => {
+    nbPlayer = nbPlayer + 1;
+});
+
 let listMembers = "";
 let listMembers2 = "";
 let listMembers3 = "";
@@ -180,7 +186,7 @@ rowMembers.forEach(row => {
     count = count + 1 ;
 });
     if(listMembers){
-        guildEmbed.addField('**Membres enregistrés :**', listMembers);
+        guildEmbed.addField(`**Membres enregistrés ${nbPlayer}/50 :**`, listMembers);
     }
     if(listMembers2){
         guildEmbed.addField('** **', listMembers2);
