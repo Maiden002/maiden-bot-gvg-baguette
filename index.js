@@ -156,10 +156,8 @@ async function accessListPlayer(message) {
     let listMembers = "";
     rowMembers.forEach(row => {
         let tagDiscord = "<@" + row.identifiant + ">";
-        listMembers = listMembers + "```| " + row.username + " - AllyCode - " + tagDiscord + "\n";
+        listMembers = listMembers + "| " + row.username + " - AllyCode - " + tagDiscord + "\n";
     });
-
-    listMembers = listMembers + "```";
 
     message.channel.send(listMembers);
 }
