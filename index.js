@@ -241,6 +241,17 @@ bot.on('message', function(message){
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         unregisterMember(message, user);
     }
+
+    // ---------- PLAYER JOKE
+    if(help.match(message)) {
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        return help.action(user.username);
+    }    
 })
 
 // FUNCTION *************************//
