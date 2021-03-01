@@ -18,6 +18,7 @@ const { promisify } = require('util');
 
 const creds = require('./client_secret.json');
 const listPlayer = require("./commands/listPlayer");
+const playerJoke = require("./commands/player_joke");
 
 let testRegister = true;
 
@@ -243,14 +244,14 @@ bot.on('message', function(message){
     }
 
     // ---------- PLAYER JOKE
-    if(help.match(message)) {
+    if(playerJoke.match(message)) {
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
 	    const args = split.slice(1);
 
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        return help.action(message, user.username);
+        return playerJoke.action(message, user.username);
     }    
 })
 
