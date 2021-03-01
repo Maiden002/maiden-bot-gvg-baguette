@@ -250,7 +250,7 @@ bot.on('message', function(message){
 	    const args = split.slice(1);
 
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        return help.action(user.username);
+        return help.action(message, user.username);
     }    
 })
 
