@@ -10,8 +10,7 @@ bot.on("ready", () => {
     bot.user.setActivity('md.help | Préparation de la TW').catch(console.error)
 })
 
-//bot.login(process.env.TOKEN);
-bot.login("ODExNjE5ODQ4MDIyNzg2MDg5.YC014g.3gTZs3DMUpqRPm30DbrvGhYjmSg");
+bot.login(process.env.TOKEN);
 
 // GOOGLE SHEET ***************************//
 const GoogleSpreadsheet = require('google-spreadsheet');
