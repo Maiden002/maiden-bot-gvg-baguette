@@ -35,6 +35,18 @@ module.exports = class playerJoke {
             message.channel.send(`Dans le milieu, on l'appel le Lucky Luke des pelotons ! Tu ne seras jamais aussi rapide que lui !`)
         } else if (pseudo.includes('strike')){
             message.channel.send(`C'est bien le seul qui, dans la vraie vie, soigne des Rancors !`)
-        } 
+        } else if (pseudo.includes('zanyant')){
+            message.channel.send(`A ces heures perdues, il est responsable Rancor. Il a la foi !`)
+        } else if (pseudo.includes('mandraig')){
+            message.channel.send(`Cette homme est recherché dans toute la galaxie ! Pourquoi ? Ne le dites à personnes mais il a déjà niquer le rancor à lui tout seul !`)
+        } else if (pseudo.includes('kolobos')){
+            message.channel.send(`Née du côté obscur ! Il découvre petit à petit le côté lumineux !`)
+        } else if (pseudo.includes('moulax')){
+            message.channel.send(`Le golio de la bande !`)
+        } else if (pseudo.includes('kimi')){
+            message.channel.send(`Dans une autre vie il aurait été une bonne personne... Dans celle-ci... comment dire de façon poli ? `)
+        } else if (pseudo.includes('giem')){
+            message.channel.send(`Le seul joueur qui pense que faire ,panic jml plusieurs fois à la suite va permettre de le débloquer ! Idiot va !`)
+        }
     }
 }
