@@ -47,6 +47,12 @@ module.exports = class playerJoke {
             message.channel.send(`Dans une autre vie il aurait été une bonne personne... Dans celle-ci... comment dire de façon poli ? `)
         } else if (pseudo.includes('giem')){
             message.channel.send(`Le seul joueur qui pense que faire ,panic jml plusieurs fois à la suite va permettre de le débloquer ! Idiot va !`)
+        } else if (pseudo.includes('coco')){
+            message.channel.send(`Coco l'asticot, surnom pris en référence à son oncle vraisemblablement !`)
+        } else if (pseudo.includes('crocal')){
+            message.channel.send(`Un jour, cet homme à fait 4% en P4 avec SEE. Mais ça c'était avant !`)
+        } else if (pseudo.includes('couacks')){
+            message.channel.send(`Une GVG sans faire son couacks n'est pas une vrai GVG !`)
         }
     }
 }
