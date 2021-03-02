@@ -53,6 +53,10 @@ module.exports = class playerJoke {
             message.channel.send(`Un jour, cet homme à fait 4% en P4 avec SEE. Mais ça c'était avant !`)
         } else if (pseudo.includes('couacks')){
             message.channel.send(`Une GVG sans faire son couacks n'est pas une vrai GVG !`)
+        } else if (pseudo.includes('vassago')){
+            message.channel.send(`La seule personne qui connait C. !`)
         }
+        
+
     }
 }
