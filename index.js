@@ -10,7 +10,8 @@ bot.on("ready", () => {
     bot.user.setActivity('md.help | Préparation de la TW').catch(console.error)
 })
 
-bot.login(process.env.TOKEN);
+//bot.login(process.env.TOKEN);
+bot.login("ODExNjE5ODQ4MDIyNzg2MDg5.YC014g.3gTZs3DMUpqRPm30DbrvGhYjmSg");
 
 // GOOGLE SHEET ***************************//
 const GoogleSpreadsheet = require('google-spreadsheet');
@@ -18,7 +19,7 @@ const { promisify } = require('util');
 
 const creds = require('./client_secret.json');
 const listPlayer = require("./commands/listPlayer");
-const playerJoke = require("./commands/player_joke");
+const playerJoke = require("./commands/playerJoke");
 
 let testRegister = true;
 
@@ -251,7 +252,8 @@ bot.on('message', function(message){
 	    const args = split.slice(1);
 
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        return playerJoke.action(message, user.username);
+        console.log(user.user.username);
+        return playerJoke.action(message, user.user.username);
     }    
 })
 
