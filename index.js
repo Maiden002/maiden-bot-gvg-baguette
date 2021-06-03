@@ -33,7 +33,9 @@ function printPlayer (player, message) {
 
 async function accessSpreadsheet(message, members) {
     console.log('Debut');
+    
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[9];
@@ -46,12 +48,13 @@ async function accessSpreadsheet(message, members) {
     const rowMembers = await promisify(sheetMemberslst.getRows)({
         offset: 1
     });
-
+    
     let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
 
     rows.forEach(row => {
-        let player = row._djhdx;
-        let poseEnDef = row._dw4je;
+        let player = row._dw4je;
+        let poseEnDef = row._dxj3v;
+        
         rowMembers.forEach(row2 => {
             if(row2.username === player) {
                 let identifiant = row2.identifiant;
