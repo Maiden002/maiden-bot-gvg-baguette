@@ -224,7 +224,7 @@ bot.on('message', function(message){
         accessSpreadsheet(message,members);
     }
 
-    // ---------- INSCRIPTION
+    // ---------- INSCRIPTION CORELLIEN
     if(messageContent.startsWith('md.r')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
@@ -235,7 +235,7 @@ bot.on('message', function(message){
         registerMember(message, user);
     }
 
-    // ---------- DESINSCRIPTION
+    // ---------- DESINSCRIPTION CORELLIEN
     if(messageContent.startsWith('md.ur')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
@@ -244,6 +244,35 @@ bot.on('message', function(message){
 
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         unregisterMember(message, user);
+    }
+
+    // ---------- INSCRIPTION REBELLE
+    if(messageContent.startsWith('md.reg')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMemberRebelle(message, user);
+    }
+
+    // ---------- DESINSCRIPTION REBELLE
+    if(messageContent.startsWith('md.unreg')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMemberRebelle(message, user);
+    }
+
+    // ---------- ASSIGNATION TW REBELLE
+    if(messageContent === 'md.assignreb'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        assignationTW_Rebelle(message,members);
     }
 
     // ---------- PLAYER JOKE
@@ -272,4 +301,121 @@ function getUserFromMention(mention) {
         
 		return mention;
 	}
+}
+
+//****** PROPRE AUX REBELLES */
+async function registerMemberRebelle(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_REBELLE);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[1];
+    testRegister = true;
+    let idToInsert = "";
+    let userNameToInsert = "";
+    let rowToAdd = "";
+
+    if(user){
+        rowToAdd = {
+            identifiant: user.id,
+            username: user.user.username
+        }
+        idToInsert = user.id;
+        userNameToInsert = user.user.username;
+    } else {
+        rowToAdd = {
+            identifiant: message.author.id,
+            username: message.author.username
+        }
+        idToInsert = message.author.id;
+        userNameToInsert = message.author.username;
+    } 
+
+    const rows = await promisify(sheet.getRows)({
+        offset: 1
+    });
+
+    rows.forEach(row => {
+        if(row.identifiant === idToInsert) {
+            testRegister = false;
+        }
+    })
+
+    if(testRegister) {
+        await promisify(sheet.addRow)(rowToAdd);
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Rebelles.');
+    }
+}
+
+async function unregisterMemberRebelle(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_REBELLE);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[1];
+    let idUserToDelete = "";
+    let idUserNameToDelete = "";
+
+    if(user) {
+        idUserToDelete = user.id;
+        idUserNameToDelete = user.username;
+    } else {
+        idUserToDelete = message.author.id;
+        idUserNameToDelete = message.author.username;
+    }
+    const rows = await promisify(sheet.getRows)({
+        query: `identifiant = ${idUserToDelete}`
+    })
+
+    if(rows[0]){
+        rows[0].del();
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Rebelles.');
+    }   
+}
+
+async function assignationTW_Rebelle(message, members) {
+    console.log('Debut');
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_REBELLE);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[6];
+    const sheetMemberslst = info.worksheets[1];
+
+    const rows = await promisify(sheet.getRows)({
+        query: '_cn6ca = FALSE'
+    });
+
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+    
+    let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
+
+    rows.forEach(row => {
+        let player = row._cx0b9;
+        let poseEnDef = row._d9ney;
+        
+        rowMembers.forEach(row2 => {
+            if(row2.ingame === player) {
+                let identifiant = row2.identifiant;
+                recap =  recap + player + ", ";
+                    if (message.channel.type !== "text") return;
+                    members.forEach(member => {
+                        // Si le membre est un bot, l’ignorer
+                        if (member.user.bot) return;
+                        // Envoyer le message au membre
+                        if(member.user.id === identifiant)
+                            member.send(poseEnDef);  
+                        });
+            }
+        })
+    })
+    recap = recap + '```';
+    message.channel.send(recap);
+    
+    console.log("Fin");
 }
