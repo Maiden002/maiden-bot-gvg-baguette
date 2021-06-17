@@ -247,7 +247,7 @@ bot.on('message', function(message){
     }
 
     // ---------- INSCRIPTION REBELLE
-    if(messageContent.startsWith('md.reg')){
+    if(messageContent.startsWith('md.add')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -258,7 +258,7 @@ bot.on('message', function(message){
     }
 
     // ---------- DESINSCRIPTION REBELLE
-    if(messageContent.startsWith('md.unreg')){
+    if(messageContent.startsWith('md.del')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
