@@ -8,7 +8,7 @@ const {prefix} = require("./config.json");
 // DEMARRAGE DU BOT ***************************//
 bot.on("ready", () => {
     console.log("Bot Maiden démarré");
-    bot.user.setActivity('md.help | Préparation de la TW').catch(console.error)
+    bot.user.setActivity('md.help (Cor) - md.aide (Reb) | Préparation de la TW').catch(console.error)
 })
 
 bot.login(process.env.TOKEN);
@@ -114,9 +114,9 @@ async function registerMember(message, user) {
 
     if(testRegister) {
         await promisify(sheet.addRow)(rowToAdd);
-        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré.');
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Corelliennes.');
     } else {
-        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré.');
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Corelliennes.');
     }
 }
 
@@ -141,9 +141,9 @@ async function unregisterMember(message, user) {
 
     if(rows[0]){
         rows[0].del();
-        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Corelliennes.');
     } else {
-        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Corelliennes.');
     }   
 }
 
