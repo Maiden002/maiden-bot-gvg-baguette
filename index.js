@@ -210,6 +210,11 @@ bot.on('message', function(message){
     if(help.match(message)) {
         return help.action(message);
     }
+
+    // ---------- HELP REBELLE
+    if(aide.match(message)) {
+        return aide.action(message);
+    }
     
     // ---------- LISTE PLAYER
     if(listPlayer.match(message)) {
