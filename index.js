@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 
 const bot = new Discord.Client();
 const help = require('./commands/help')
+const aide = require('./commands/aide')
 const {prefix} = require("./config.json");
 
 // DEMARRAGE DU BOT ***************************//
