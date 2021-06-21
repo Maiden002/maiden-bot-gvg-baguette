@@ -32,7 +32,7 @@ function printPlayer (player, message) {
     console.log('----------------------');
 }
 
-async function accessSpreadsheet(message, members) {
+async function assignationTW_Corellien(message, members) {
     console.log('Debut');
     
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
@@ -57,7 +57,7 @@ async function accessSpreadsheet(message, members) {
         let poseEnDef = row._dxj3v;
         
         rowMembers.forEach(row2 => {
-            if(row2.username === player) {
+            if(row2.ingame === player) {
                 let identifiant = row2.identifiant;
                 recap =  recap + player + ", ";
                     if (message.channel.type !== "text") return;
@@ -204,6 +204,72 @@ rowMembers.forEach(row => {
     console.log('Fin - ListPlayer');
 }
 
+async function printBySquad_Corellien(message, members) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheetMemberslst = info.worksheets[10];
+
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+
+    
+const guildEmbed = new Discord.MessageEmbed()
+.setColor('#0099ff')
+.setTitle('Les Baguettes Corelliennes')
+.setAuthor('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png', '')
+.setDescription('Liste des joueurs des Baguettes Corelliennes par escouades')
+.setThumbnail('https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png')
+.setTimestamp()
+.setFooter('Maiden Bot', 'https://cdn.discordapp.com/app-icons/811619848022786089/8d9fb17a9e32751934f57a65ad8f5f91.png');
+
+let nbPlayerDelta = 0;
+let nbPlayerGold = 0;
+let nbPlayerRogue = 0;
+let nbPlayerRed = 0;
+let nbPlayerSabre = 0;
+
+let lstVide = "";
+let listMembersDelta = "";
+let listMembersGold = "";
+let listMembersRogue = "";
+let listMembersSabre = "";
+let listMembersRed = "";
+
+let count = 1;
+rowMembers.forEach(row => {
+    if(row.escouade == "Delta") {
+        listMembersDelta = listMembersDelta + `| ${row.allycode} - ${row.ingame} - <@${row.identifiant}>\n`;
+        nbPlayerDelta = nbPlayerDelta +1;
+    } else if(row.escouade == "Gold") {
+        listMembersGold = listMembersGold + `| ${row.allycode} - ${row.ingame} - <@${row.identifiant}>\n`;
+        nbPlayerGold = nbPlayerGold +1;
+    } else if(row.escouade == "Sabre") {
+        listMembersSabre = listMembersSabre + `| ${row.allycode} - ${row.ingame} - <@${row.identifiant}>\n`;
+        nbPlayerSabre = nbPlayerSabre +1;
+    } else if(row.escouade == "Red") {
+        listMembersRed = listMembersRed + `| ${row.allycode} - ${row.ingame} - <@${row.identifiant}>\n`;
+        nbPlayerRed = nbPlayerRed +1;
+    } else if(row.escouade == "Rogue") {
+        listMembersRogue = listMembersRogue + `| ${row.allycode} - ${row.ingame} - <@${row.identifiant}>\n`;
+        nbPlayerRogue = nbPlayerRogue +1;
+    } 
+    
+    count = count + 1 ;
+});
+    if(listMembersDelta){
+        guildEmbed.addField(`**Membres de l'escouade DELTA ${nbPlayerDelta}/10**`, listMembersDelta);
+        guildEmbed.addField(`**Membres de l'escouade GOLD ${nbPlayerGold}/10**`, listMembersGold);
+        guildEmbed.addField(`**Membres de l'escouade SABRE ${nbPlayerSabre}/10**`, listMembersSabre);
+        guildEmbed.addField(`**Membres de l'escouade RED ${nbPlayerRed}/10**`, listMembersRed);
+        guildEmbed.addField(`**Membres de l'escouade ROGUE ${nbPlayerRogue}/10**`, listMembersRogue);
+    }
+
+    message.channel.send(guildEmbed)
+}
+
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
     let messageContent = message.content.toLowerCase();
@@ -227,7 +293,14 @@ bot.on('message', function(message){
     if(messageContent === 'md.tw_assignation'){
         // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
-        accessSpreadsheet(message,members);
+        assignationTW_Corellien(message,members);
+    }
+
+    // ---------- ASSIGNATION TW
+    if(messageContent === 'md.squad'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        printBySquad_Corellien(message,members);
     }
 
     // ---------- INSCRIPTION CORELLIEN
