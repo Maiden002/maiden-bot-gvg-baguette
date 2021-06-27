@@ -13,7 +13,6 @@ bot.on("ready", () => {
 
 bot.login(process.env.TOKEN);
 
-
 // GOOGLE SHEET ***************************//
 const GoogleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
@@ -385,95 +384,95 @@ rowMembers.forEach(row => {
 
 async function planDeFarmMember(message, user) {
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[12];
     const sheetMemberslst = info.worksheets[10];
     
-    let nomJoueurDiscord = message.author.username;
-    
     if(user){
-       nomJoueurDiscord = user.user.username;
+        const rowMembers = await promisify(sheetMemberslst.getRows)({
+            offset: 1
+        });
+        
+        const rows = await promisify(sheet.getRows)({
+            offset: 1
+        });
+
+        let planDeFarm = "";
+        let messageFarm = "";
+        rowMembers.forEach(member => {
+            if(member.username === user.user.username){
+                planDeFarm = `\n**Plan de farm conseillé pour ${member.ingame}**\n\n`;
+
+                rows.forEach(row => {
+                    let player = row.joueur;
+                    if(player === member.ingame){
+                        let pdf1 = row.pdf1;
+                        let pdf2 = row.pdf2;
+                        let pdf3 = row.pdf3;
+                        let pdf4 = row.pdf4;
+                        let pdf5 = row.pdf5;
+                        let pdf6 = row.pdf6;
+                        let pdf7 = row.pdf7;
+                        let pdf8 = row.pdf8;
+                        let pdf9 = row.pdf9;
+                        let pdf10 = row.pdf10;
+                        let message = "";
+
+                        if(pdf1 != 'NA'){
+                            message = pdf1 + "\n"
+                        }
+
+                        if(pdf2 != 'NA'){
+                            message = message + pdf2 + "\n"
+                        }
+
+                        if(pdf3 != 'NA'){
+                            message = message + pdf3 + "\n"
+                        }
+
+                        if(pdf4 != 'NA'){
+                            message = message + pdf4 + "\n"
+                        }
+
+                        if(pdf5 != 'NA'){
+                            message = message + pdf5 + "\n"
+                        }
+
+                        if(pdf6 != 'NA'){
+                            message = message + pdf6 + "\n"
+                        }
+
+                        if(pdf7 != 'NA'){
+                            message = message + pdf7 + "\n"
+                        }
+
+                        if(pdf8 != 'NA'){
+                            message = message + pdf8 + "\n"
+                        }
+
+                        if(pdf9 != 'NA'){
+                            message = message + pdf9 + "\n"
+                        }
+
+                        if(pdf10 != 'NA'){
+                            message = message + pdf10 + "\n"
+                        }
+                        
+                        if(message != ''){
+                            message = message + "\nEssaye de faire au mieux mais ça serait bien d'obtenir ces niveaux de relique pour ces personnages là."
+                        } else {
+                            message = "A l'heure actuelle tu n'as pas de farm conseillé pour la guilde."
+                        }
+                        messageFarm = message;
+                    }
+                })
+            }   
+        })
+        planDeFarm = planDeFarm + messageFarm;
+        message.channel.send(planDeFarm);
     } 
-    const rowMembers = await promisify(sheetMemberslst.getRows)({
-        query: `username = ${nomJoueurDiscord}` 
-    });
-
-    let nomJoueurIngame = "";
-    rowMembers.forEach(rowUser => {
-        nomJoueurIngame = rowUser.ingame;
-    })
-    
-    const rows = await promisify(sheet.getRows)({
-    });
-
-    let planDeFarm = `\n**Plan de farm conseillé pour ${nomJoueurIngame}**\n\n`;
-    let messageFarm = "";
-    rows.forEach(row => {
-        let player = row.joueur;
-        if(player === nomJoueurIngame){
-            let pdf1 = row.pdf1;
-            let pdf2 = row.pdf2;
-            let pdf3 = row.pdf3;
-            let pdf4 = row.pdf4;
-            let pdf5 = row.pdf5;
-            let pdf6 = row.pdf6;
-            let pdf7 = row.pdf7;
-            let pdf8 = row.pdf8;
-            let pdf9 = row.pdf9;
-            let pdf10 = row.pdf10;
-            let message = "";
-
-            if(pdf1 != 'NA'){
-                message = pdf1 + "\n"
-            }
-
-            if(pdf2 != 'NA'){
-                message = message + pdf2 + "\n"
-            }
-
-            if(pdf3 != 'NA'){
-                message = message + pdf3 + "\n"
-            }
-
-            if(pdf4 != 'NA'){
-                message = message + pdf4 + "\n"
-            }
-
-            if(pdf5 != 'NA'){
-                message = message + pdf5 + "\n"
-            }
-
-            if(pdf6 != 'NA'){
-                message = message + pdf6 + "\n"
-            }
-
-            if(pdf7 != 'NA'){
-                message = message + pdf7 + "\n"
-            }
-
-            if(pdf8 != 'NA'){
-                message = message + pdf8 + "\n"
-            }
-
-            if(pdf9 != 'NA'){
-                message = message + pdf9 + "\n"
-            }
-
-            if(pdf10 != 'NA'){
-                message = message + pdf10 + "\n"
-            }
-            
-            if(message != ''){
-                message = message + "\nEssaye de faire au mieux mais ça serait bien d'obtenir ces niveaux de relique pour ces personnages là."
-            } else {
-                message = "A l'heure actuelle tu n'as pas de farm conseillé pour la guilde."
-            }
-            messageFarm = message;
-        }
-    })
-    planDeFarm = planDeFarm + messageFarm;
-    message.channel.send(planDeFarm);
 }
 
 // FUNCTION *************************//
