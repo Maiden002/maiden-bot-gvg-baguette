@@ -392,7 +392,7 @@ async function planDeFarmMember(message, user) {
     
     let nomJoueurDiscord = message.author.username;
     
-    If(user){
+    if(user){
        nomJoueurDiscord = user.user.username;
     } 
     const rowMembers = await promisify(sheetMemberslst.getRows)({
