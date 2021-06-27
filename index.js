@@ -28,7 +28,7 @@ let testRegister = true;
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
     let messageContent = message.content.toLowerCase();
-    console.log(message);
+    console.log(messageContent);
 
     // ---------- HELP
     if(help.match(message)) {
