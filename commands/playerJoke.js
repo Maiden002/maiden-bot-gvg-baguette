@@ -38,7 +38,7 @@ module.exports = class playerJoke {
         } else if (pseudo.includes('zanyant')){
             message.channel.send(`A ces heures perdues, il est responsable Rancor. Il a la foi !`)
         } else if (pseudo.includes('mandraig')){
-            message.channel.send(`Cette homme est recherché dans toute la galaxie ! Pourquoi ? Ne le dites à personnes mais il a déjà niquer le rancor à lui tout seul !`)
+            message.channel.send(`Cet homme est recherché dans toute la galaxie ! Pourquoi ? Ne le dites à personnes mais il a déjà niquer le rancor à lui tout seul !`)
         } else if (pseudo.includes('kolobos')){
             message.channel.send(`Née du côté obscur ! Il découvre petit à petit le côté lumineux !`)
         } else if (pseudo.includes('moulax')){

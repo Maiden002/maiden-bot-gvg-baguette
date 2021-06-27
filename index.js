@@ -13,6 +13,7 @@ bot.on("ready", () => {
 
 bot.login(process.env.TOKEN);
 
+
 // GOOGLE SHEET ***************************//
 const GoogleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
@@ -20,8 +21,117 @@ const { promisify } = require('util');
 const creds = require('./client_secret.json');
 const listPlayer = require("./commands/listPlayer");
 const playerJoke = require("./commands/playerJoke");
+const { exec } = require("child_process");
 
 let testRegister = true;
+
+// MESSAGE DU BOT ***************************//
+bot.on('message', function(message){
+    let messageContent = message.content.toLowerCase();
+    // ---------- HELP
+    if(help.match(message)) {
+        return help.action(message);
+    }
+
+    // ---------- HELP REBELLE
+    if(aide.match(message)) {
+        return aide.action(message);
+    }
+    
+    // ---------- LISTE PLAYER
+    if(listPlayer.match(message)) {
+        const members = message.channel.guild.members.cache;
+        accessListPlayer(message, members);
+    }  
+    
+    // ---------- ASSIGNATION TW
+    if(messageContent === 'md.assigncor'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        assignationTW_Corellien(message,members);
+    }
+
+    // ---------- Liste joueurs par escouade
+    if(messageContent === 'md.squad'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        printBySquad_Corellien(message,members);
+    }
+
+    // ---------- Plan de Farm Cor
+    if(messageContent.startsWith('md.pdf')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        planDeFarmMember(message, user);
+    }
+
+    // ---------- INSCRIPTION CORELLIEN
+    if(messageContent.startsWith('md.reg')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMember(message, user);
+    }
+
+    // ---------- DESINSCRIPTION CORELLIEN
+    if(messageContent.startsWith('md.ur')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMember(message, user);
+    }
+
+    // ---------- INSCRIPTION REBELLE
+    if(messageContent.startsWith('md.add')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMemberRebelle(message, user);
+    }
+
+    // ---------- DESINSCRIPTION REBELLE
+    if(messageContent.startsWith('md.del')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMemberRebelle(message, user);
+    }
+
+    // ---------- ASSIGNATION TW REBELLE
+    if(messageContent === 'md.assignreb'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        assignationTW_Rebelle(message,members);
+    }
+
+    // ---------- PLAYER JOKE
+    if(playerJoke.match(message)) {
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        console.log(user.user.username);
+        return playerJoke.action(message, user.user.username);
+    }    
+})
 
 function printPlayer (player, message) {
 
@@ -77,7 +187,8 @@ async function assignationTW_Corellien(message, members) {
 }
 
 async function registerMember(message, user) {
-    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    //const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    const doc = new GoogleSpreadsheet("1CTA9M5EDc39mCX8iFqtv3raNKbGxLT8P-RkNGj1Xz9c");
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[10];
@@ -270,102 +381,93 @@ rowMembers.forEach(row => {
     message.channel.send(guildEmbed)
 }
 
-// MESSAGE DU BOT ***************************//
-bot.on('message', function(message){
-    let messageContent = message.content.toLowerCase();
-    // ---------- HELP
-    if(help.match(message)) {
-        return help.action(message);
-    }
+async function planDeFarmMember(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[12];
+    const sheetMemberslst = info.worksheets[10];
+    const nomJoueurDiscord = user.user.username;
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        query: `username = ${nomJoueurDiscord}` 
+    });
 
-    // ---------- HELP REBELLE
-    if(aide.match(message)) {
-        return aide.action(message);
-    }
+    let nomJoueurIngame = "";
+    rowMembers.forEach(rowUser => {
+        nomJoueurIngame = rowUser.ingame;
+    })
     
-    // ---------- LISTE PLAYER
-    if(listPlayer.match(message)) {
-        const members = message.channel.guild.members.cache;
-        accessListPlayer(message, members);
-    }  
-    
-    // ---------- ASSIGNATION TW
-    if(messageContent === 'md.tw_assignation'){
-        // Récupérer la liste des membres
-        const members = message.channel.guild.members.cache;
-        assignationTW_Corellien(message,members);
-    }
+    const rows = await promisify(sheet.getRows)({
+    });
 
-    // ---------- ASSIGNATION TW
-    if(messageContent === 'md.squad'){
-        // Récupérer la liste des membres
-        const members = message.channel.guild.members.cache;
-        printBySquad_Corellien(message,members);
-    }
+    let planDeFarm = `\n**Plan de farm conseillé pour ${nomJoueurIngame}**\n\n`;
+    let messageFarm = "";
+    rows.forEach(row => {
+        let player = row.joueur;
+        if(player === nomJoueurIngame){
+            let pdf1 = row.pdf1;
+            let pdf2 = row.pdf2;
+            let pdf3 = row.pdf3;
+            let pdf4 = row.pdf4;
+            let pdf5 = row.pdf5;
+            let pdf6 = row.pdf6;
+            let pdf7 = row.pdf7;
+            let pdf8 = row.pdf8;
+            let pdf9 = row.pdf9;
+            let pdf10 = row.pdf10;
+            let message = "";
 
-    // ---------- INSCRIPTION CORELLIEN
-    if(messageContent.startsWith('md.r')){
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
+            if(pdf1 != 'NA'){
+                message = pdf1 + "\n"
+            }
 
-        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        registerMember(message, user);
-    }
+            if(pdf2 != 'NA'){
+                message = message + pdf2 + "\n"
+            }
 
-    // ---------- DESINSCRIPTION CORELLIEN
-    if(messageContent.startsWith('md.ur')){
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
+            if(pdf3 != 'NA'){
+                message = message + pdf3 + "\n"
+            }
 
-        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        unregisterMember(message, user);
-    }
+            if(pdf4 != 'NA'){
+                message = message + pdf4 + "\n"
+            }
 
-    // ---------- INSCRIPTION REBELLE
-    if(messageContent.startsWith('md.add')){
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
+            if(pdf5 != 'NA'){
+                message = message + pdf5 + "\n"
+            }
 
-        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        registerMemberRebelle(message, user);
-    }
+            if(pdf6 != 'NA'){
+                message = message + pdf6 + "\n"
+            }
 
-    // ---------- DESINSCRIPTION REBELLE
-    if(messageContent.startsWith('md.del')){
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
+            if(pdf7 != 'NA'){
+                message = message + pdf7 + "\n"
+            }
 
-        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        unregisterMemberRebelle(message, user);
-    }
+            if(pdf8 != 'NA'){
+                message = message + pdf8 + "\n"
+            }
 
-    // ---------- ASSIGNATION TW REBELLE
-    if(messageContent === 'md.assignreb'){
-        // Récupérer la liste des membres
-        const members = message.channel.guild.members.cache;
-        assignationTW_Rebelle(message,members);
-    }
+            if(pdf9 != 'NA'){
+                message = message + pdf9 + "\n"
+            }
 
-    // ---------- PLAYER JOKE
-    if(playerJoke.match(message)) {
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
-
-        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
-        console.log(user.user.username);
-        return playerJoke.action(message, user.user.username);
-    }    
-})
+            if(pdf10 != 'NA'){
+                message = message + pdf10 + "\n"
+            }
+            
+            if(message != ''){
+                message = message + "\nEssaye de faire au mieux mais ça serait bien d'obtenir ces niveaux de relique pour ces personnages là."
+            } else {
+                message = "A l'heure actuelle tu n'as pas de farm conseillé pour la guilde."
+            }
+            messageFarm = message;
+        }
+    })
+    planDeFarm = planDeFarm + messageFarm;
+    message.channel.send(planDeFarm);
+}
 
 // FUNCTION *************************//
 function getUserFromMention(mention) {
