@@ -28,6 +28,8 @@ let testRegister = true;
 // MESSAGE DU BOT ***************************//
 bot.on('message', function(message){
     let messageContent = message.content.toLowerCase();
+    console.log(message);
+
     // ---------- HELP
     if(help.match(message)) {
         return help.action(message);
@@ -387,7 +389,11 @@ async function planDeFarmMember(message, user) {
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[12];
     const sheetMemberslst = info.worksheets[10];
-    const nomJoueurDiscord = user.user.username;
+    
+    const nomJoueurDiscord = message.author.username;
+    If(user) {
+       nomJoueurDiscord = user.user.username;
+    } 
     const rowMembers = await promisify(sheetMemberslst.getRows)({
         query: `username = ${nomJoueurDiscord}` 
     });
