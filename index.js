@@ -419,6 +419,7 @@ async function planDeFarmMember(message, user) {
                         let pdf10 = row.pdf10;
                         let pdf11 = row.pdf11;
                         let pdf12 = row.pdf12;
+                        let pdf13 = row.pdf13;
 
                         let message = "";
 
@@ -468,6 +469,10 @@ async function planDeFarmMember(message, user) {
 
                         if(pdf12 != 'NA'){
                             message = message + " - " + pdf12 + "\n"
+                        }
+
+                        if(pdf13 != 'NA'){
+                            message = message + " - " + pdf13 + "\n"
                         }
                         
                         if(message != ''){
