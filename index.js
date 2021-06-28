@@ -417,46 +417,57 @@ async function planDeFarmMember(message, user) {
                         let pdf8 = row.pdf8;
                         let pdf9 = row.pdf9;
                         let pdf10 = row.pdf10;
+                        let pdf11 = row.pdf11;
+                        let pdf12 = row.pdf12;
+
                         let message = "";
 
                         if(pdf1 != 'NA'){
-                            message = pdf1 + "\n"
+                            message = " - " + pdf1 + "\n"
                         }
 
                         if(pdf2 != 'NA'){
-                            message = message + pdf2 + "\n"
+                            message = " - " + message + pdf2 + "\n"
                         }
 
                         if(pdf3 != 'NA'){
-                            message = message + pdf3 + "\n"
+                            message = " - " + message + pdf3 + "\n"
                         }
 
                         if(pdf4 != 'NA'){
-                            message = message + pdf4 + "\n"
+                            message = " - " + message + pdf4 + "\n"
                         }
 
                         if(pdf5 != 'NA'){
-                            message = message + pdf5 + "\n"
+                            message = " - " + message + pdf5 + "\n"
                         }
 
                         if(pdf6 != 'NA'){
-                            message = message + pdf6 + "\n"
+                            message = " - " + message + pdf6 + "\n"
                         }
 
                         if(pdf7 != 'NA'){
-                            message = message + pdf7 + "\n"
+                            message = " - " + message + pdf7 + "\n"
                         }
 
                         if(pdf8 != 'NA'){
-                            message = message + pdf8 + "\n"
+                            message = " - " + message + pdf8 + "\n"
                         }
 
                         if(pdf9 != 'NA'){
-                            message = message + pdf9 + "\n"
+                            message = " - " + message + pdf9 + "\n"
                         }
 
                         if(pdf10 != 'NA'){
-                            message = message + pdf10 + "\n"
+                            message = " - " + message + pdf10 + "\n"
+                        }
+
+                        if(pdf11 != 'NA'){
+                            message = " - " + message + pdf11 + "\n"
+                        }
+
+                        if(pdf12 != 'NA'){
+                            message = " - " + message + pdf12 + "\n"
                         }
                         
                         if(message != ''){
