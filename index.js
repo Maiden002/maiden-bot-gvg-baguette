@@ -420,60 +420,37 @@ async function planDeFarmMember(message, user) {
                         let pdf11 = row.pdf11;
                         let pdf12 = row.pdf12;
                         let pdf13 = row.pdf13;
+                        let pdf14 = row.pdf14;
+                        let pdf15 = row.pdf15;
+                        let pdf16 = row.pdf16;
+                        let pdf17 = row.pdf17;
+                        let pdf18 = row.pdf18;
+                        let pdf19 = row.pdf19;
+                        let pdf20 = row.pdf20;
 
                         let message = "";
 
-                        if(pdf1 != 'NA'){
-                            message = " - " + pdf1 + "\n"
-                        }
+                        if(pdf1 != 'NA'){ message = " - " + pdf1 + "\n" }
 
-                        if(pdf2 != 'NA'){
-                            message = message + " - " + pdf2 + "\n"
-                        }
-
-                        if(pdf3 != 'NA'){
-                            message = message + " - " + pdf3 + "\n"
-                        }
-
-                        if(pdf4 != 'NA'){
-                            message = message + " - " + pdf4 + "\n"
-                        }
-
-                        if(pdf5 != 'NA'){
-                            message = message + " - " + pdf5 + "\n"
-                        }
-
-                        if(pdf6 != 'NA'){
-                            message = message + " - " + pdf6 + "\n"
-                        }
-
-                        if(pdf7 != 'NA'){
-                            message = message + " - " + pdf7 + "\n"
-                        }
-
-                        if(pdf8 != 'NA'){
-                            message = message + " - " + pdf8 + "\n"
-                        }
-
-                        if(pdf9 != 'NA'){
-                            message = message + " - " + pdf9 + "\n"
-                        }
-
-                        if(pdf10 != 'NA'){
-                            message = message + " - " + pdf10 + "\n"
-                        }
-
-                        if(pdf11 != 'NA'){
-                            message = message + " - " + pdf11 + "\n"
-                        }
-
-                        if(pdf12 != 'NA'){
-                            message = message + " - " + pdf12 + "\n"
-                        }
-
-                        if(pdf13 != 'NA'){
-                            message = message + " - " + pdf13 + "\n"
-                        }
+                        if(pdf2 != 'NA'){ message = message + " - " + pdf2 + "\n" }
+                        if(pdf3 != 'NA'){ message = message + " - " + pdf3 + "\n" }
+                        if(pdf4 != 'NA'){ message = message + " - " + pdf4 + "\n" }
+                        if(pdf5 != 'NA'){ message = message + " - " + pdf5 + "\n" }
+                        if(pdf6 != 'NA'){ message = message + " - " + pdf6 + "\n" }
+                        if(pdf7 != 'NA'){ message = message + " - " + pdf7 + "\n" }
+                        if(pdf8 != 'NA'){ message = message + " - " + pdf8 + "\n" }
+                        if(pdf9 != 'NA'){ message = message + " - " + pdf9 + "\n" }
+                        if(pdf10 != 'NA'){ message = message + " - " + pdf10 + "\n" }
+                        if(pdf11 != 'NA'){ message = message + " - " + pdf11 + "\n" }
+                        if(pdf12 != 'NA'){ message = message + " - " + pdf12 + "\n" }
+                        if(pdf13 != 'NA'){ message = message + " - " + pdf13 + "\n" }
+                        if(pdf14 != 'NA'){ message = message + " - " + pdf14 + "\n" }
+                        if(pdf15 != 'NA'){ message = message + " - " + pdf15 + "\n" }
+                        if(pdf16 != 'NA'){ message = message + " - " + pdf16 + "\n" }
+                        if(pdf17 != 'NA'){ message = message + " - " + pdf17 + "\n" }
+                        if(pdf18 != 'NA'){ message = message + " - " + pdf18 + "\n" }
+                        if(pdf19 != 'NA'){ message = message + " - " + pdf19 + "\n" }
+                        if(pdf20 != 'NA'){ message = message + " - " + pdf20 + "\n" }
                         
                         if(message != ''){
                             message = message + "\nEssaye de faire au mieux mais ça serait bien d'obtenir ces niveaux de relique pour ces personnages là."
