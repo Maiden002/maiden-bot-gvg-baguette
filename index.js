@@ -720,9 +720,9 @@ async function registerMemberResistants(message, user) {
 
     if(testRegister) {
         await promisify(sheet.addRow)(rowToAdd);
-        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Resistantes.');
     } else {
-        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Resistantes.');
     }
 }
 
@@ -748,9 +748,9 @@ async function unregisterMemberResistants(message, user) {
 
     if(rows[0]){
         rows[0].del();
-        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Resistantes.');
     } else {
-        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Resistantes.');
     }   
 }
 
@@ -837,9 +837,9 @@ async function registerMemberSeparatistes(message, user) {
 
     if(testRegister) {
         await promisify(sheet.addRow)(rowToAdd);
-        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Séparatistes.');
     } else {
-        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Séparatistes.');
     }
 }
 
@@ -865,9 +865,9 @@ async function unregisterMemberSeparatistes(message, user) {
 
     if(rows[0]){
         rows[0].del();
-        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Séparatistes.');
     } else {
-        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Rebelles.');
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Séparatistes.');
     }   
 }
 
