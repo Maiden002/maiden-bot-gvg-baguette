@@ -44,7 +44,7 @@ module.exports = class playerJoke {
         } else if (pseudo.includes('moulax')){
             message.channel.send(`Le golio de la bande !`)
         } else if (pseudo.includes('kimi')){
-            message.channel.send(`Dans une autre vie il aurait été une bonne personne... Dans celle-ci... comment dire de façon poli ? `)
+            message.channel.send(`Dans une autre vie il aurait pu être une bonne personne... Dans celle-ci... comment dire de façon poli ? `)
         } else if (pseudo.includes('giem')){
             message.channel.send(`Le seul joueur qui pense que faire ,panic jml plusieurs fois à la suite va permettre de le débloquer ! Idiot va !`)
         } else if (pseudo.includes('coco')){
@@ -53,9 +53,11 @@ module.exports = class playerJoke {
             message.channel.send(`Un jour, cet homme à fait 4% en P4 avec SEE. Mais ça c'était avant !`)
         } else if (pseudo.includes('couacks')){
             message.channel.send(`Une GVG sans faire son couacks n'est pas une vrai GVG !`)
-        } else if (pseudo.includes('vassago')){
+        } else if (pseudo.includes('lamiwar')){
             message.channel.send(`La seule personne qui connait C. !`)
-        }
+        } else if (pseudo.includes('shadowmist')){
+            message.channel.send(`Pleure pas ! Le bot t'aime pas !`)
+        } 
         
 
     }

@@ -8,7 +8,7 @@ const {prefix} = require("./config.json");
 // DEMARRAGE DU BOT ***************************//
 bot.on("ready", () => {
     console.log("Bot Maiden démarré");
-    bot.user.setActivity('md.help (Cor) - md.aide (Reb) | Préparation de la TW').catch(console.error)
+    bot.user.setActivity('md.help | Préparation de la TW').catch(console.error)
 })
 
 bot.login(process.env.TOKEN);
@@ -69,8 +69,14 @@ bot.on('message', function(message){
         planDeFarmMember(message, user);
     }
 
+    /*****************
+     * 
+     * Les Baguettes Corellienes
+     * 
+     ******************/
+
     // ---------- INSCRIPTION CORELLIEN
-    if(messageContent.startsWith('md.reg')){
+    if(messageContent.startsWith('md.addcor')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -81,7 +87,7 @@ bot.on('message', function(message){
     }
 
     // ---------- DESINSCRIPTION CORELLIEN
-    if(messageContent.startsWith('md.ur')){
+    if(messageContent.startsWith('md.delcor')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -91,19 +97,25 @@ bot.on('message', function(message){
         unregisterMember(message, user);
     }
 
-    // ---------- INSCRIPTION REBELLE
-    if(messageContent.startsWith('md.add')){
-        const withoutPrefix = message.content.slice(prefix.length);
-	    const split = withoutPrefix.split(/ +/);
-	    const command = split[0];
-	    const args = split.slice(1);
+    /*****************
+     * 
+     * Les Baguettes Rebelles
+     * 
+     ******************/
 
+    // ---------- INSCRIPTION REBELLE
+    if(messageContent.startsWith('md.addreb')){
+        const withoutPrefix = message.content.slice(prefix.length);
+        const split = withoutPrefix.split(/ +/);
+        const command = split[0];
+        const args = split.slice(1);
+    
         const user = message.guild.members.cache.get(getUserFromMention(args[0]));
         registerMemberRebelle(message, user);
     }
 
     // ---------- DESINSCRIPTION REBELLE
-    if(messageContent.startsWith('md.del')){
+    if(messageContent.startsWith('md.delreb')){
         const withoutPrefix = message.content.slice(prefix.length);
 	    const split = withoutPrefix.split(/ +/);
 	    const command = split[0];
@@ -118,6 +130,76 @@ bot.on('message', function(message){
         // Récupérer la liste des membres
         const members = message.channel.guild.members.cache;
         assignationTW_Rebelle(message,members);
+    }
+
+    /*****************
+     * 
+     * Les Baguettes Resistantes
+     * 
+     ******************/
+
+    // ---------- INSCRIPTION RESISTANTS
+    if(messageContent.startsWith('md.addres')){
+        const withoutPrefix = message.content.slice(prefix.length);
+        const split = withoutPrefix.split(/ +/);
+        const command = split[0];
+        const args = split.slice(1);
+    
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMemberResistants(message, user);
+    }
+
+    // ---------- DESINSCRIPTION RESISTANTS
+    if(messageContent.startsWith('md.delres')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMemberResistants(message, user);
+    }
+
+    // ---------- ASSIGNATION TW RESISTANTS
+    if(messageContent === 'md.assignres'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        assignationTW_Resistants(message,members);
+    }
+
+    /*****************
+     * 
+     * Les Baguettes Séparatistes
+     * 
+     ******************/
+
+    // ---------- INSCRIPTION SEPARATISTES
+    if(messageContent.startsWith('md.addsepa')){
+        const withoutPrefix = message.content.slice(prefix.length);
+        const split = withoutPrefix.split(/ +/);
+        const command = split[0];
+        const args = split.slice(1);
+    
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        registerMemberSeparatistes(message, user);
+    }
+
+    // ---------- DESINSCRIPTION SEPARATISTES
+    if(messageContent.startsWith('md.delsepa')){
+        const withoutPrefix = message.content.slice(prefix.length);
+	    const split = withoutPrefix.split(/ +/);
+	    const command = split[0];
+	    const args = split.slice(1);
+
+        const user = message.guild.members.cache.get(getUserFromMention(args[0]));
+        unregisterMemberSeparatistes(message, user);
+    }
+
+    // ---------- ASSIGNATION TW SEPARATISTES
+    if(messageContent === 'md.assignsepa'){
+        // Récupérer la liste des membres
+        const members = message.channel.guild.members.cache;
+        assignationTW_Separatistes(message,members);
     }
 
     // ---------- PLAYER JOKE
@@ -563,6 +645,240 @@ async function assignationTW_Rebelle(message, members) {
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[6];
     const sheetMemberslst = info.worksheets[1];
+
+    const rows = await promisify(sheet.getRows)({
+        query: '_cn6ca = FALSE'
+    });
+
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+    
+    let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
+
+    rows.forEach(row => {
+        let player = row._cx0b9;
+        let poseEnDef = row._d9ney;
+        
+        rowMembers.forEach(row2 => {
+            if(row2.ingame === player) {
+                let identifiant = row2.identifiant;
+                recap =  recap + player + ", ";
+                    if (message.channel.type !== "text") return;
+                    members.forEach(member => {
+                        // Si le membre est un bot, l’ignorer
+                        if (member.user.bot) return;
+                        // Envoyer le message au membre
+                        if(member.user.id === identifiant)
+                            member.send(poseEnDef);  
+                        });
+            }
+        })
+    })
+    recap = recap + '```';
+    message.channel.send(recap);
+    
+    console.log("Fin");
+}
+
+//****** PROPRE AUX RESISTANTS */
+async function registerMemberResistants(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_RESISTANTS);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    testRegister = true;
+    let idToInsert = "";
+    let userNameToInsert = "";
+    let rowToAdd = "";
+
+    if(user){
+        rowToAdd = {
+            identifiant: user.id,
+            username: user.user.username
+        }
+        idToInsert = user.id;
+        userNameToInsert = user.user.username;
+    } else {
+        rowToAdd = {
+            identifiant: message.author.id,
+            username: message.author.username
+        }
+        idToInsert = message.author.id;
+        userNameToInsert = message.author.username;
+    } 
+
+    const rows = await promisify(sheet.getRows)({
+        offset: 1
+    });
+
+    rows.forEach(row => {
+        if(row.identifiant === idToInsert) {
+            testRegister = false;
+        }
+    })
+
+    if(testRegister) {
+        await promisify(sheet.addRow)(rowToAdd);
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Rebelles.');
+    }
+}
+
+async function unregisterMemberResistants(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_RESISTANTS);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    let idUserToDelete = "";
+    let idUserNameToDelete = "";
+
+    if(user) {
+        idUserToDelete = user.id;
+        idUserNameToDelete = user.username;
+    } else {
+        idUserToDelete = message.author.id;
+        idUserNameToDelete = message.author.username;
+    }
+    const rows = await promisify(sheet.getRows)({
+        query: `identifiant = ${idUserToDelete}`
+    })
+
+    if(rows[0]){
+        rows[0].del();
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Rebelles.');
+    }   
+}
+
+async function assignationTW_Resistants(message, members) {
+    console.log('Debut');
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_RESISTANTS);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[9];
+    const sheetMemberslst = info.worksheets[10];
+
+    const rows = await promisify(sheet.getRows)({
+        query: '_cn6ca = FALSE'
+    });
+
+    const rowMembers = await promisify(sheetMemberslst.getRows)({
+        offset: 1
+    });
+    
+    let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
+
+    rows.forEach(row => {
+        let player = row._cx0b9;
+        let poseEnDef = row._d9ney;
+        
+        rowMembers.forEach(row2 => {
+            if(row2.ingame === player) {
+                let identifiant = row2.identifiant;
+                recap =  recap + player + ", ";
+                    if (message.channel.type !== "text") return;
+                    members.forEach(member => {
+                        // Si le membre est un bot, l’ignorer
+                        if (member.user.bot) return;
+                        // Envoyer le message au membre
+                        if(member.user.id === identifiant)
+                            member.send(poseEnDef);  
+                        });
+            }
+        })
+    })
+    recap = recap + '```';
+    message.channel.send(recap);
+    
+    console.log("Fin");
+}
+
+//****** PROPRE AUX SEPARATISTES */
+async function registerMemberSeparatistes(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_SEPARATISTE);
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    testRegister = true;
+    let idToInsert = "";
+    let userNameToInsert = "";
+    let rowToAdd = "";
+
+    if(user){
+        rowToAdd = {
+            identifiant: user.id,
+            username: user.user.username
+        }
+        idToInsert = user.id;
+        userNameToInsert = user.user.username;
+    } else {
+        rowToAdd = {
+            identifiant: message.author.id,
+            username: message.author.username
+        }
+        idToInsert = message.author.id;
+        userNameToInsert = message.author.username;
+    } 
+
+    const rows = await promisify(sheet.getRows)({
+        offset: 1
+    });
+
+    rows.forEach(row => {
+        if(row.identifiant === idToInsert) {
+            testRegister = false;
+        }
+    })
+
+    if(testRegister) {
+        await promisify(sheet.addRow)(rowToAdd);
+        message.channel.send('> ' + userNameToInsert + ' est maintenant enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + userNameToInsert + ' est déjà enregistré pour Les Baguettes Rebelles.');
+    }
+}
+
+async function unregisterMemberSeparatistes(message, user) {
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_SEPARATISTE);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[10];
+    let idUserToDelete = "";
+    let idUserNameToDelete = "";
+
+    if(user) {
+        idUserToDelete = user.id;
+        idUserNameToDelete = user.username;
+    } else {
+        idUserToDelete = message.author.id;
+        idUserNameToDelete = message.author.username;
+    }
+    const rows = await promisify(sheet.getRows)({
+        query: `identifiant = ${idUserToDelete}`
+    })
+
+    if(rows[0]){
+        rows[0].del();
+        message.channel.send('> ' + idUserNameToDelete + ' n`est plus enregistré pour Les Baguettes Rebelles.');
+    } else {
+        message.channel.send('> ' + idUserNameToDelete + ' n`a jamais été enregistré pour Les Baguettes Rebelles.');
+    }   
+}
+
+async function assignationTW_Separatistes(message, members) {
+    console.log('Debut');
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY_SEPARATISTE);
+    
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const sheet = info.worksheets[9];
+    const sheetMemberslst = info.worksheets[10];
 
     const rows = await promisify(sheet.getRows)({
         query: '_cn6ca = FALSE'
