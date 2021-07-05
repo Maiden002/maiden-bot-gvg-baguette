@@ -774,8 +774,8 @@ async function assignationTW_Resistants(message, members) {
     let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
 
     rows.forEach(row => {
-        let player = row._cx0b9;
-        let poseEnDef = row._d9ney;
+        let player = row._dw4je;
+        let poseEnDef = row._dxj3v;
         
         rowMembers.forEach(row2 => {
             if(row2.ingame === player) {
@@ -891,8 +891,8 @@ async function assignationTW_Separatistes(message, members) {
     let recap = "```Les membres suivants ont reçus leurs poses en défense : ";
 
     rows.forEach(row => {
-        let player = row._cx0b9;
-        let poseEnDef = row._d9ney;
+        let player = row._dw4je;
+        let poseEnDef = row._dxj3v;
         
         rowMembers.forEach(row2 => {
             if(row2.ingame === player) {
