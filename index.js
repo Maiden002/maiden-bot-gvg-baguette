@@ -14,7 +14,7 @@ bot.on("ready", () => {
 bot.login(process.env.TOKEN);
 
 // GOOGLE SHEET ***************************//
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+const GoogleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
 
 const creds = require('./client_secret.json');
