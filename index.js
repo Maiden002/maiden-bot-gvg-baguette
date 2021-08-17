@@ -342,7 +342,7 @@ async function unregisterMember(message, user) {
 async function accessListPlayer(message, members) {
     console.log('Debut - ListPlayer');
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
-    await promisify(doc.useServiceAccountAuth)(creds);
+    await promisify(doc.useServiceAccountAuth)(creds).catch(() => {});
     const info = await promisify(doc.getInfo)();
     const sheetMemberslst = info.worksheets[10];
 
@@ -465,7 +465,7 @@ rowMembers.forEach(row => {
 async function planDeFarmMember(message, user) {
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     
-    await promisify(doc.useServiceAccountAuth)(creds);
+    await promisify(doc.useServiceAccountAuth)(creds).catch(() => {});
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[12];
     const sheetMemberslst = info.worksheets[10];
