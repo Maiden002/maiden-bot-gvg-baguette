@@ -269,8 +269,7 @@ async function assignationTW_Corellien(message, members) {
 }
 
 async function registerMember(message, user) {
-    //const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
-    const doc = new GoogleSpreadsheet("1CTA9M5EDc39mCX8iFqtv3raNKbGxLT8P-RkNGj1Xz9c");
+    const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[10];
