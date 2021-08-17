@@ -465,7 +465,9 @@ rowMembers.forEach(row => {
 async function planDeFarmMember(message, user) {
     const doc = new GoogleSpreadsheet(process.env.SHEETKEY);
     
-    await promisify(doc.useServiceAccountAuth)(creds).catch(() => {});
+    await doc.useServiceAccountAuth(creds);
+    await doc.loadInfo();
+    //await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const sheet = info.worksheets[12];
     const sheetMemberslst = info.worksheets[10];
